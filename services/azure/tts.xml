@@ -1,0 +1,7 @@
+<speak version="1.0" xml:lang="{lang}">
+	<voice name="{voice}" style="{style}">
+		<prosody pitch="{pitch}" rate="{rate}">
+			{text}
+		</prosody>
+	</voice>
+</speak>

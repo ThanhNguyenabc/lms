@@ -1,0 +1,52 @@
+<script>
+
+function URL_Encode(str) 
+{
+  str = (str + '')
+    .toString();
+
+  // Tilde should be allowed unescaped in future versions of PHP (as reflected below), but if you want to reflect current
+  // PHP behavior, you would need to add ".replace(/~/g, '%7E');" to the following.
+  return encodeURIComponent(str)
+    .replace(/!/g, '%21')
+    .replace(/'/g, '%27')
+    .replace(/\(/g, '%28')
+    .
+  replace(/\)/g, '%29')
+    .replace(/\*/g, '%2A')
+    .replace(/%20/g, '+');
+}
+
+function Sendmail(arguments, callback)
+{ 
+ var paramstr =  "";
+ var params   = Object.keys(arguments);
+ 
+ for(var i in params)
+ {
+  var param = params[i];
+  var value = arguments[param];
+  
+  paramstr = paramstr + '&' + param + '=' + URL_Encode(JSON.stringify(value));
+ }
+ 
+ var loader = new XMLHttpRequest();
+ 
+ loader.onreadystatechange =
+ function()
+ {
+  if (loader.readyState == 4 && loader.status == 200)
+  {
+   var data = loader.responseText;
+   if(callback) callback(data);
+  }
+ }
+ 
+ loader.open("POST", "https://www.bostonextend.com/sendmail/index.php", true);
+ loader.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+ loader.send(paramstr);
+}
+
+
+Sendmail({to:"andrea@lalista.org", subject:"test", template:"newlead", data:{phone:"137137137", name:"ciao"}});
+</script>
